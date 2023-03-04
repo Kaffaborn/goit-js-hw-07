@@ -1,5 +1,6 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
+
 const galleryContainer = document.querySelector('.js-gallery');
 const galleryMarkup = createGalleryMarkup(galleryItems);
 
@@ -24,10 +25,23 @@ function createGalleryMarkup(galleryItems) {
 }
 
 function onGalleryContainerClick(evt) {
+    evt.preventDefault();
     const isImage = evt.target.classList.contains('gallery__image');
     if (!isImage) { 
         return;
     }
 
-    console.log(evt.target.dataset.source);
+    const instance = basicLightbox.create(`
+		<img width="1400" height="900" src="${evt.target.dataset.source}">
+	`)
+    instance.show()
+    
+    window.addEventListener('keydown', onEscKeyPress);
+
+    function onEscKeyPress(evt) {
+        if (evt.code === 'Escape') {
+            instance.close();
+        }
+    }
 }
+
